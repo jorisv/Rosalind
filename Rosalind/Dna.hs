@@ -7,6 +7,7 @@ module Rosalind.Dna
 , toString
 , nrNucleotide
 , nucContent
+, hammingDist
 , dnaToRna
 , dnaComplement
 , readFastaLabel
@@ -47,6 +48,9 @@ nucContent nuc dna = nrNuc/lString
     where nrNuc = fromIntegral (foldl (\acc n -> nrNucleotide n dna + acc) 0 nuc)
           lString = fromIntegral (length dna)
 
+hammingDist :: Dna -> Dna -> Integer
+hammingDist d1 d2 = foldl (\acc (n1,n2) -> acc + nucDist n1 n2) 0 $ zip d1 d2
+    where nucDist n1 n2 = if n1 /= n2 then 1 else 0
 
 dnaToRna :: Dna -> Rna
 dnaToRna xs = map toRna xs
