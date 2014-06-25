@@ -74,10 +74,10 @@ readFasta str = Fasta {label=fastaLab, Rosalind.Dna.id=fastaId, dna=d}
 
 -- better to use Data.List.Split but that train me
 recSplit :: Char -> String -> [String]
-recSplit sep str = case elemIndex sep (drop 1 str) of
-                    Just index -> let (preStr,postStr) = splitAt (index+1) str
-                                  in preStr:(recSplit sep postStr)
-                    Nothing -> [str]
+recSplit sep str = subRecSplit $ elemIndex sep $ drop 1 str
+    where subRecSplit (Just index) = let (preStr,postStr) = splitAt (index+1) str
+                                     in preStr:(recSplit sep postStr)
+          subRecSplit Nothing = [str]
 
 readFastaLines :: String -> [Fasta]
 readFastaLines str = map readFasta (recSplit '>' str)
